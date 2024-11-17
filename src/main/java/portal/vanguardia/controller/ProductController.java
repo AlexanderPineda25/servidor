@@ -15,8 +15,14 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/product")
 public class ProductController {
-    @Autowired
+
     ProductServiceImpl productServiceImpl;
+
+    @Autowired
+    public ProductController(ProductServiceImpl productServiceImpl) {
+        this.productServiceImpl = productServiceImpl;
+    }
+
     @PostMapping
     public ResponseEntity<Product> saveProduct(@RequestPart("product") Product product, @RequestPart("file") MultipartFile file) {
         try {

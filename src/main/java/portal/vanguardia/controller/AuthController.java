@@ -7,7 +7,6 @@ import portal.vanguardia.dto.UserDto;
 import portal.vanguardia.security.JwtGenerator;
 import portal.vanguardia.service.RolService;
 import portal.vanguardia.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +17,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class AuthController {
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private RolService rolService;
-    @Autowired
-    private JwtGenerator jwtGenerator;
+    private final UserService userService;
+    private final RolService rolService;
+    private final JwtGenerator jwtGenerator;
+
+    public AuthController(UserService userService, RolService rolService, JwtGenerator jwtGenerator) {
+        this.userService = userService;
+        this.rolService = rolService;
+        this.jwtGenerator = jwtGenerator;
+    }
 
 
     @PostMapping("/login")

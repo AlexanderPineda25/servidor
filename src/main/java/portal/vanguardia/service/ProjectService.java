@@ -15,5 +15,4 @@ public interface ProjectService {
     void deleteProject(Project project) throws IOException;
     Project updateProjectImage(MultipartFile file, Project project) throws IOException;
     List<Project> getProjectsByType(Project.ProjectType type);
-
 }

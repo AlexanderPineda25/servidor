@@ -15,8 +15,12 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/project")
 public class ProjectController {
-    @Autowired
     ProjectServiceImpl projectServiceImpl;
+
+    @Autowired
+    public ProjectController(ProjectServiceImpl projectServiceImpl) {
+        this.projectServiceImpl = projectServiceImpl;
+    }
 
     @PostMapping
     public ResponseEntity<Project> saveProject(@RequestPart("project") Project project, @RequestPart("file")MultipartFile file) {

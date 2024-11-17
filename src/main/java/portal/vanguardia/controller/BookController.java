@@ -15,9 +15,11 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/book")
 public class BookController {
-    @Autowired
     BookServiceImpl bookServiceImpl;
-
+    @Autowired
+    public BookController(BookServiceImpl bookServiceImpl) {
+        this.bookServiceImpl = bookServiceImpl;
+    }
     @PostMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<Book> saveBook(@RequestPart("book") Book book, @RequestPart(value = "image", required = false)MultipartFile image,
                                          @RequestPart(value = "file", required = false)MultipartFile file) {
@@ -29,7 +31,6 @@ public class BookController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
     @PutMapping("/{id}/image")
     public ResponseEntity<Book> updateBookImage(@PathVariable Long id, @RequestPart("image") MultipartFile image) throws IOException {
         Optional<Book> book = bookServiceImpl.getBookById(id);

@@ -1,5 +1,6 @@
 package portal.vanguardia.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -8,19 +9,17 @@ import jakarta.validation.constraints.NotBlank;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class File {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @NotBlank
     private String name;
-
     @NotBlank
     private String fileUrl;
-
     @NotBlank
     private String fileId;
 

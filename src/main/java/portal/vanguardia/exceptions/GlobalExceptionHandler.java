@@ -20,7 +20,6 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<ErrorObject>(errorObject,HttpStatus.NOT_FOUND);
     }
-
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<ErrorObject> handlerConflictException(ConflictException ex){
         ErrorObject errorObject = new ErrorObject();
@@ -42,7 +41,6 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<ErrorObject>(errorObject,HttpStatus.UNAUTHORIZED);
     }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorObject> handlerInternalServer(Exception ex){
 
@@ -54,6 +52,4 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<ErrorObject>(errorObject,HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-
 }

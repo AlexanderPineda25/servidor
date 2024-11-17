@@ -3,16 +3,18 @@ package portal.vanguardia.service.impl;
 import portal.vanguardia.entity.Rol;
 import portal.vanguardia.repository.RoleRepository;
 import portal.vanguardia.service.RolService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class RolServiceImple implements RolService {
+public class RolServiceImpl implements RolService {
 
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
+
+    public RolServiceImpl(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
 
     @Override
     public Optional<Rol> findByname(String name) {

@@ -15,8 +15,13 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/newspaper")
 public class NewspaperController {
-    @Autowired
+
     NewspaperServiceImpl newspaperServiceImpl;
+
+    @Autowired
+    public NewspaperController(NewspaperServiceImpl newspaperServiceImpl) {
+        this.newspaperServiceImpl = newspaperServiceImpl;
+    }
 
     @PostMapping(consumes = {"multipart/form-data"})
     public ResponseEntity<Newspaper> saveNewspaper(@RequestPart("newspaper") Newspaper newspaper, @RequestPart(value = "image", required = false) MultipartFile image,

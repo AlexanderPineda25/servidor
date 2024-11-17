@@ -18,7 +18,6 @@ import java.util.Objects;
 @Service
 public class CloudinaryServiceImpl implements CloudinaryService {
     private final Cloudinary cloudinary;
-
     public CloudinaryServiceImpl(
             @Value("${cloudinary.cloud-name}") String cloudName,
             @Value("${cloudinary.api-key}") String apiKey,
@@ -29,7 +28,6 @@ public class CloudinaryServiceImpl implements CloudinaryService {
         valuesMap.put("api_secret", apiSecret);
         cloudinary = new Cloudinary(valuesMap);
     }
-
     @Override
     public Map<String, Object> upload(MultipartFile multipartFile) throws IOException {
         File file = convert(multipartFile);
@@ -39,11 +37,9 @@ public class CloudinaryServiceImpl implements CloudinaryService {
             Files.deleteIfExists(file.toPath());
         }
     }
-
     public Map<String, Object> delete(String id) throws IOException {
         return cloudinary.uploader().destroy(id, ObjectUtils.emptyMap());
     }
-
     private File convert(MultipartFile multipartFile) throws IOException {
         File file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
         try (FileOutputStream fo = new FileOutputStream(file)) {

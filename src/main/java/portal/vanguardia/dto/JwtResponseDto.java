@@ -1,20 +1,12 @@
 package portal.vanguardia.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class JwtResponseDto {
-
     private String accessToken;
-    public JwtResponseDto(String accessToken){
-        this.accessToken = accessToken;
-    }
-
-    public JwtResponseDto(){}
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
 }

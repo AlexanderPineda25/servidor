@@ -1,19 +1,25 @@
 package portal.vanguardia.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
-@Entity
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Rol {
+@Entity
+public class Grade {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
+    private String gradeName;
 
-    @Column(unique = true)
-    private String name;
+    @OneToMany(mappedBy = "grade")
+    private Set<Student> students;
 }

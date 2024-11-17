@@ -25,21 +25,25 @@ public class JwtGenerator {
     @Value("${security.jwt.secret-key}")
     private String secretKey;
 
-    public String generateToken(Authentication authentication) {
-        UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
-        List<String> roles = userPrincipal.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-
+    private String createToken(String username, List<String> roles) {
         Date currentDate = new Date();
         Date expireDate = new Date(currentDate.getTime() + SecurityConstants.JWT_EXPIRATION);
 
         return Jwts.builder()
-                .subject(userPrincipal.getUsername())
+                .subject(username)
                 .claim("roles", roles)
                 .issuedAt(currentDate)
                 .expiration(expireDate)
                 .signWith(getKey())
                 .compact();
+    }
+
+    public String generateToken(Authentication authentication) {
+        UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
+        List<String> roles = userPrincipal.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+
+        return createToken(userPrincipal.getUsername(), roles);
     }
 
     public Key getKey() {
@@ -64,39 +68,23 @@ public class JwtGenerator {
             Jwts.parser().verifyWith((SecretKey) getKey()).build().parseSignedClaims(token).getPayload();
             return true;
         } catch (MalformedJwtException e) {
-            logger.error("Token mal formado " + e.getMessage());
+            logger.error("Token mal formado {}", e.getMessage());
         } catch (UnsupportedJwtException e) {
-            logger.error("Token no soportado " + e.getMessage());
+            logger.error("Token no soportado {}", e.getMessage());
         } catch (ExpiredJwtException e) {
-            logger.error("Token expirado " + e.getMessage());
+            logger.error("Token expirado {}", e.getMessage());
         } catch (IllegalArgumentException e) {
-            logger.error("Token vacío " + e.getMessage());
+            logger.error("Token vacío {}", e.getMessage());
         } catch (SignatureException e) {
-            logger.error("Error en al forma " + e.getMessage());
+            logger.error("Error en la firma del token {}", e.getMessage());
         }
         return false;
     }
 
     public String refreshToken(Authentication authentication) {
-        try {
-            UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
-            List<String> roles = userPrincipal.getAuthorities().stream()
-                    .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-
-            Date currentDate = new Date();
-            Date expireDate = new Date(currentDate.getTime() + SecurityConstants.JWT_EXPIRATION);
-
-            // Generando un nuevo token
-            return Jwts.builder()
-                    .subject(userPrincipal.getUsername())
-                    .claim("roles", roles)
-                    .issuedAt(currentDate)
-                    .expiration(expireDate)
-                    .signWith(getKey())
-                    .compact();
-
-        } catch (Exception e) {
-            throw new RuntimeException("Error internal server");
-        }
+        UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
+        List<String> roles = userPrincipal.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        return createToken(userPrincipal.getUsername(), roles);
     }
 }

@@ -3,7 +3,6 @@ package portal.vanguardia.configuration;
 import portal.vanguardia.security.JwtAuthenticationFilter;
 import portal.vanguardia.security.JwtAuthEntryPoint;
 import portal.vanguardia.service.impl.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,13 +22,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private UserDetailsServiceImpl userDetailsServiceImpl;
-    @Autowired
-    private JwtAuthEntryPoint jwtAuthEntryPoint;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final JwtAuthEntryPoint jwtAuthEntryPoint;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+    public SecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl,
+                          JwtAuthEntryPoint jwtAuthEntryPoint,
+                          JwtAuthenticationFilter jwtAuthenticationFilter) {
+        this.userDetailsServiceImpl = userDetailsServiceImpl;
+        this.jwtAuthEntryPoint = jwtAuthEntryPoint;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception{

@@ -16,5 +16,4 @@ public interface BookService {
     void deleteBook(Book book) throws IOException;
     Book updateBookImage(MultipartFile image, Book book) throws IOException;
     Book updateBookFile(MultipartFile file, Book book) throws IOException;
-
 }
