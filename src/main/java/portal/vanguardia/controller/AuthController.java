@@ -27,7 +27,6 @@ public class AuthController {
         this.jwtGenerator = jwtGenerator;
     }
 
-
     @PostMapping("/login")
     public ResponseEntity<JwtResponseDto> login(@RequestBody LoginDto loginDto) {
         JwtResponseDto jwtResponse = userService.login(loginDto);
@@ -42,9 +41,7 @@ public class AuthController {
 
     @PostMapping("/refresh-token")
     public ResponseEntity<?> refreshToke(Authentication authentication){
-
         String token = jwtGenerator.refreshToken(authentication);
-
         JwtResponseDto jwtRefresh = new JwtResponseDto(token);
         return new ResponseEntity<JwtResponseDto>(jwtRefresh, HttpStatus.OK);
     }

@@ -20,4 +20,14 @@ public class VerifyTokenController {
     public String user() {
         return "Hola bienvenido User!";
     }
+
+    @RequestMapping("/student")
+    public String student() {
+        return "Hola bienvenido Student!";
+    }
+
+    @RequestMapping("/teacher")
+    public String teacher() {
+        return "Hola bienvenido Teacher!";
+    }
 }

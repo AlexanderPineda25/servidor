@@ -24,8 +24,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -51,40 +51,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @PostConstruct
-    public void initAdminUser() {
+    public void initDefaultUsersAndRoles() {
         rolService.createAdminRoleIfNotExist();
+        rolService.createUserRoleIfNotExist();
+        rolService.createStudentRoleIfNotExist();
+        rolService.createTeacherRoleIfNotExist();
 
-        if (!userRepository.existsByUsername("admin")) {
-            User adminUser = new User();
-            adminUser.setUsername("admin");
-            adminUser.setPassword(passwordEncoder.encode("admin"));
-            adminUser.setEmail("admin@example.com");
-
-            Rol adminRole = rolService.findByname("ADMIN").orElseThrow(() -> new NotFoundException("Rol ADMIN no encontrado"));
-            Set<Rol> roles = new HashSet<>();
-            roles.add(adminRole);
-            adminUser.setRoles(roles);
-
-            userRepository.save(adminUser);
-        }
+        createDefaultUser("admin", "admin", "admin@example.com", "ADMIN");
+        createDefaultUser("user", "user", "user@example.com", "USER");
+        createDefaultUser("student", "student", "student@example.com", "STUDENT");
+        createDefaultUser("teacher", "teacher", "teacher@example.com", "TEACHER");
     }
 
-    @PostConstruct
-    public void initUserUser() {
-        rolService.createUserRoleIfNotExist();
+    private void createDefaultUser(String username, String password, String email, String roleName) {
+        if (!userRepository.existsByUsername(username)) {
+            User user = new User();
+            user.setUsername(username);
+            user.setPassword(passwordEncoder.encode(password));
+            user.setEmail(email);
 
-        if (!userRepository.existsByUsername("user")) {
-            User userUser = new User();
-            userUser.setUsername("user");
-            userUser.setPassword(passwordEncoder.encode("user"));
-            userUser.setEmail("user@example.com");
+            Rol role = rolService.findByname(roleName)
+                    .orElseThrow(() -> new NotFoundException("Rol " + roleName + " no encontrado"));
+            user.setRoles(Collections.singleton(role));
 
-            Rol userRole = rolService.findByname("USER").orElseThrow(() -> new NotFoundException("Rol USER no encontrado"));
-            Set<Rol> roles = new HashSet<>();
-            roles.add(userRole);
-            userUser.setRoles(roles);
-
-            userRepository.save(userUser);
+            userRepository.save(user);
         }
     }
 
@@ -144,6 +134,24 @@ public class UserServiceImpl implements UserService {
         userDto.setUsername(user.getUsername());
         userDto.setRoles(user.getRoles());
         return userDto;
+    }
+
+    @Override
+    public List<UserDto> findUsersByRole(String role) {
+        List<User> users = userRepository.findUsersByRole(role);
+        return users.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    private UserDto convertToDto(User user) {
+        return new UserDto(
+                user.getId(),
+                user.getUsername(),
+                null,
+                user.getEmail(),
+                user.getRoles()
+        );
     }
 
 }

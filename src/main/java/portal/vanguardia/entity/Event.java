@@ -22,6 +22,8 @@ public class Event {
     private LocalDate date;
     @NotBlank
     private String title;
+    @Lob
+    @Column(length = 65535)
     @NotBlank
     private String description;
     @NotBlank

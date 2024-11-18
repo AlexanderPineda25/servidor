@@ -13,6 +13,8 @@ public class Product {
     private Long id;
     @NotBlank
     private String name;
+    @Lob
+    @Column(length = 65535)
     @NotBlank
     private String description;
     @NotNull

@@ -19,6 +19,8 @@ public class Newspaper {
     private Long id;
     @NotBlank
     private String title;
+    @Lob
+    @Column(length = 65535)
     @NotBlank
     private String description;
     private LocalDate publicationDate;

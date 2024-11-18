@@ -58,6 +58,8 @@ public class SecurityConfig {
                                 .requestMatchers("/api/register").permitAll()
                                 .requestMatchers("/admin").hasAnyAuthority("ADMIN")
                                 .requestMatchers("/user").hasAnyAuthority("USER")
+                                .requestMatchers("/student").hasAnyAuthority("STUDENT")
+                                .requestMatchers("/teacher").hasAnyAuthority("TEACHER")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

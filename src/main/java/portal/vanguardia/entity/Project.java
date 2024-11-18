@@ -24,6 +24,8 @@ public class Project {
     private Long id;
     @NotBlank
     private String title;
+    @Lob
+    @Column(length = 65535)
     @NotBlank
     private String description;
     @NotNull
