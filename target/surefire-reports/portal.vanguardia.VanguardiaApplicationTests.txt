@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: portal.vanguardia.VanguardiaApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 63.95 s -- in portal.vanguardia.VanguardiaApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 29.81 s -- in portal.vanguardia.VanguardiaApplicationTests
