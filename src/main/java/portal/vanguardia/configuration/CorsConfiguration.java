@@ -20,7 +20,7 @@ public class CorsConfiguration {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("https://portal-vanguardia.web.app")
+                        .allowedOrigins("https://colegio--rural-vanguardia.web.app")
                         .allowedMethods(GET, POST, PUT, DELETE, PATCH)
                         .allowedHeaders("*")
                         .allowedOriginPatterns("*")
